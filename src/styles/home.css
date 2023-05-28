@@ -1,0 +1,34 @@
+
+  
+  .email {
+    display: flex;
+    align-items: center;
+  }
+  
+  .email i {
+    margin-right: 10px;
+  }
+ 
+  
+  .contact-info i {
+    margin-right: 10px;
+  }
+ 
+img{
+  justify-content: space-between;
+  width: 200px;
+  height: 200px;
+}
+.delete-button {
+  text-align: end;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
