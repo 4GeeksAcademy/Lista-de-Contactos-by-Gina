@@ -25,7 +25,7 @@ export const Demo = () => {
                 }
               }
               
-              fetch("https://assets.breatheco.de/apis/fake/contact/", config).then(res => res.json())
+              fetch("https://assets.breatheco.de/apis/fake/contact/", config).then(response => response.json())
               .catch(error => console.error('Error:', error))
               .then(response => { 
                 navigate("/")

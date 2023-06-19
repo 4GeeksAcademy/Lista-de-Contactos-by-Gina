@@ -26,6 +26,16 @@ img{
   cursor: pointer;
 }
 
+.edit-button {
+  background-color: transparent;
+  border: none;
+  color: black;
+  cursor: pointer;
+}
+
+.edit-button i {
+  font-size: 1.5rem;
+}
 
 
 
