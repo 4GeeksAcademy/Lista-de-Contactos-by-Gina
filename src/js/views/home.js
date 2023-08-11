@@ -11,7 +11,7 @@ export const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://assets.breatheco.de/apis/fake/contact/agenda/johana_agenda")
+    fetch("https://playground.4geeks.com/apis/fake/contact/agenda/johana_agenda")
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -27,7 +27,7 @@ export const Home = () => {
     const updatedData = data.filter((item) => item.id !== id);
     setData(updatedData);
 
-    fetch(`https://assets.breatheco.de/apis/fake/contact/${id}`, {
+    fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, {
       method: "DELETE",
     })
       .then((response) => {

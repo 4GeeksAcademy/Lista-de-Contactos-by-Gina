@@ -1,17 +1,22 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { useParams, useNavigate } from "react-router-dom";
 
 export const EditForm = () => {
   const { id } = useParams();
-  const { actions } = useContext(Context);
-  const [contact, setContact] = useState(null);
   const navigate = useNavigate();
+  const { actions } = useContext(Context);
+  const [contact, setContact] = useState({
+    full_name: "",
+    address: "",
+    phone: "",
+    email: ""
+  });
 
   useEffect(() => {
     const fetchContact = async () => {
       try {
-        const response = await fetch(`https://assets.breatheco.de/apis/fake/contact/${id}`);
+        const response = await fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`);
         const data = await response.json();
         setContact(data);
       } catch (error) {
@@ -22,24 +27,32 @@ export const EditForm = () => {
     fetchContact();
   }, [id]);
 
-  const handleUpdate = () => {
-    fetch(`https://assets.breatheco.de/apis/fake/contact/${id}`, {
+  const handleChange = (event) => {
+    setContact({ ...contact, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const config = {
       method: "PUT",
+      body: JSON.stringify(contact),
       headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(contact)
-    })
-      .then((response) => {
-        if (response.ok) {
-          navigate("/");
-        } else {
-          throw new Error("Error al actualizar el contacto");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+        'Content-Type': 'application/json'
+      }
+    };
+
+    fetch(`https://playground.4geeks.com/apis/fake/contact/${contact.id}`, config)
+      .then((response) => response.text())
+      .catch(error => console.log('error', error))
+      .then(response => {
+        actions.loadContacts();
+        navigate("/");
       });
+  };
+
+  const handleEdit = () => {
+    actions.seeContact(contact);
+    navigate(`/editForm/${contact.id}`);
   };
 
   return (
@@ -51,8 +64,9 @@ export const EditForm = () => {
             <input
               type="text"
               className="form-control"
+              name="full_name"
               value={contact.full_name}
-              onChange={(e) => setContact({ ...contact, full_name: e.target.value })}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -60,8 +74,9 @@ export const EditForm = () => {
             <input
               type="text"
               className="form-control"
+              name="address"
               value={contact.address}
-              onChange={(e) => setContact({ ...contact, address: e.target.value })}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -69,8 +84,9 @@ export const EditForm = () => {
             <input
               type="text"
               className="form-control"
+              name="phone"
               value={contact.phone}
-              onChange={(e) => setContact({ ...contact, phone: e.target.value })}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -78,13 +94,15 @@ export const EditForm = () => {
             <input
               type="email"
               className="form-control"
+              name="email"
               value={contact.email}
-              onChange={(e) => setContact({ ...contact, email: e.target.value })}
+              onChange={handleChange}
             />
           </div>
-          <button type="button" className="btn btn-primary my-2" onClick={handleUpdate}>
+          <button type="button" className="btn btn-primary my-2" onClick={handleSubmit}>
             Actualizar
           </button>
+          
         </form>
       )}
     </div>

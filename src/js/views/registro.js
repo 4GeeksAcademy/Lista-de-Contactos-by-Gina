@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import { Context } from "../store/appContext";
-
 import "../../styles/demo.css";
 
-export const Demo = () => {
-	const navigate = useNavigate()
+export const Registro = () => {
+  const navigate = useNavigate()
     const [data,setData] = useState ({agenda_slug:"johana_agenda"})
     const handleChange = (e) =>{
         setData({...data, [e.target.name]: e.target.value})
@@ -25,7 +22,7 @@ export const Demo = () => {
                 }
               }
               
-              fetch("https://assets.breatheco.de/apis/fake/contact/", config).then(response => response.json())
+              fetch("https://playground.4geeks.com/apis/fake/contact/", config).then(response => response.json())
               .catch(error => console.error('Error:', error))
               .then(response => { 
                 navigate("/")
@@ -70,4 +67,3 @@ return (
 				<button className="btn btn-primary">Back home</button>
 			</Link>
         </div>
-	
