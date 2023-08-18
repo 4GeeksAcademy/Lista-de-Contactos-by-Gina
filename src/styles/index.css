@@ -1,4 +1,31 @@
-
-h1{
-    justify-content: center;
+img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    text-align: center;
+}
+.icon{
+    margin-right: 5px;
+}
+.createButton{
+    text-align: right;
+    margin-bottom: 10px;
+}
+.contacts ul li{
+    border-bottom: 1px solid grey;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+}
+.contacts ul li:first-child{
+    border-top: 1px solid grey;
+}
+ul{
+    margin: 0;
+    padding: 0;
+}
+.contact{
+    padding: 10px 0px;
+}
+.photo{
+    text-align: center;
 }

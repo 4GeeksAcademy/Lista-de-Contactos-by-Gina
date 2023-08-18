@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt, faLocationDot, faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
@@ -49,48 +49,43 @@ export const Home = () => {
   return (
     <div className="container">
       <div className="row">
-        {data.map((contact) => (
-          <div className="card col-md-12 mb-2 " key={contact.id} style={{ lineHeight: "3" }}>
-            <div id={`agenda-${contact.id}`}></div>
-            <div className="d-flex align-items-center">
-              <div className="col-sm-3">
-                <img
-                  src="https://2.bp.blogspot.com/-3CFngKHGQ2A/TaPJUyTkhzI/AAAAAAAABsc/U8klpvVbnAs/s1600/d_silhouette_Homer_Simpson.jpg"
-                  alt=""
-                  className="rounded-circle"
-                />
-              </div>
-              <div className="col-md-7 col-10">
-                <div className="name">{contact.full_name}</div>
-                <div className="address">
-                  <FontAwesomeIcon icon={faLocationDot} className="icon" />
-                  {contact.address}
+        {data.map((contact, index) => (
+          <div className="card col-md-12 mb-2" key={contact.id} style={{ lineHeight: "3" }}>
+            <div id={`agenda-${contact.id}`}>
+              <div className="d-flex align-items-center">
+                <div className="col-sm-3">
+                  <img
+                    src="https://2.bp.blogspot.com/-3CFngKHGQ2A/TaPJUyTkhzI/AAAAAAAABsc/U8klpvVbnAs/s1600/d_silhouette_Homer_Simpson.jpg"
+                    alt=""
+                    className="rounded-circle"
+                  />
                 </div>
-                <div className="phone">
-                  <FontAwesomeIcon icon={faPhone} className="icon" />
-                  {contact.phone}
+                <div className="col-sm-6">
+                  <h4>{contact.full_name}</h4>
+                  <p>
+                    <FontAwesomeIcon icon={faLocationDot} /> {contact.address}
+                  </p>
+                  <p>
+                    <FontAwesomeIcon icon={faEnvelope} /> {contact.email}
+                  </p>
+                  <p>
+                    <FontAwesomeIcon icon={faPhone} /> {contact.phone}
+                  </p>
                 </div>
-                <div className="email">
-                  <FontAwesomeIcon icon={faEnvelope} className="icon" />
-                  {contact.email}
+                <div className="col-sm-3">
+                  <button
+                    className="btn btn-primary mx-2"
+                    onClick={() => handleEdit(contact)}
+                  >
+                    <FontAwesomeIcon icon={faPencilAlt} />
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(contact.id)}
+                  >
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                  </button>
                 </div>
-              </div>
-              <div className="col-md-2 col-2">
-                <FontAwesomeIcon
-                  icon={faPencilAlt}
-                  className="col-6"
-                  onClick={() => {
-                    actions.seeContact(contact);
-                    navigate(`/editForm/${contact.id}`);
-                  }}
-                />
-                <FontAwesomeIcon
-                  icon={faTrashAlt}
-                  className="col-6"
-                  onClick={() => {
-                    handleDelete(contact.id);
-                  }}
-                />
               </div>
             </div>
           </div>

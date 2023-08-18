@@ -14,14 +14,12 @@ export const Registro = () => {
        
 
         const config = {
-   
-                method: 'POST', 
-                body: JSON.stringify(data), 
-                headers:{
-                  'Content-Type': 'application/json'
-                }
-              }
-              
+            method: 'POST', 
+            body: JSON.stringify(data), 
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          };
               fetch("https://playground.4geeks.com/apis/fake/contact/", config).then(response => response.json())
               .catch(error => console.error('Error:', error))
               .then(response => { 

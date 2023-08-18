@@ -1,110 +1,75 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, {useState, useContext, useEffect} from "react";
+import { useNavigate } from "react-router";
 import { Context } from "../store/appContext";
-import { useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 export const EditForm = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { actions } = useContext(Context);
-  const [contact, setContact] = useState({
-    full_name: "",
-    address: "",
-    phone: "",
-    email: ""
-  });
+	const { actions, store } = useContext(Context);
+	const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchContact = async () => {
-      try {
-        const response = await fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`);
-        const data = await response.json();
-        setContact(data);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
+	
+	const [contact, setContact] = useState(store.contact);
+	
+	
+    const handleChange = (event) =>{
+		setContact({...contact, [event.target.name]: event.target.value});
+		
+    }
 
-    fetchContact();
-  }, [id]);
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const config = {
+            method: "PUT",
+            body: JSON.stringify(contact),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        console.log(contact)
+		fetch(`https://playground.4geeks.com/apis/fake/contact/${contact.id}`, config)
+			.then((response) => response.text())
+			.catch(error => console.log('error', error))
+			.then(response => {
+				actions.loadContacts();
+				navigate("/");
+			});
+    }
 
-  const handleChange = (event) => {
-    setContact({ ...contact, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const config = {
-      method: "PUT",
-      body: JSON.stringify(contact),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-
-    fetch(`https://playground.4geeks.com/apis/fake/contact/${contact.id}`, config)
-      .then((response) => response.text())
-      .catch(error => console.log('error', error))
-      .then(response => {
-        actions.loadContacts();
-        navigate("/");
-      });
-  };
-
-  const handleEdit = () => {
-    actions.seeContact(contact);
-    navigate(`/editForm/${contact.id}`);
-  };
-
-  return (
-    <div className="container">
-      {contact && (
-        <form>
-          <div className="form-group">
-            <label>Nombre completo:</label>
-            <input
-              type="text"
-              className="form-control"
-              name="full_name"
-              value={contact.full_name}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Dirección:</label>
-            <input
-              type="text"
-              className="form-control"
-              name="address"
-              value={contact.address}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Teléfono:</label>
-            <input
-              type="text"
-              className="form-control"
-              name="phone"
-              value={contact.phone}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Email:</label>
-            <input
-              type="email"
-              className="form-control"
-              name="email"
-              value={contact.email}
-              onChange={handleChange}
-            />
-          </div>
-          <button type="button" className="btn btn-primary my-2" onClick={handleSubmit}>
-            Actualizar
-          </button>
-          
-        </form>
-      )}
-    </div>
-  );
-};
+    return(
+        <form className="container" onSubmit={handleSubmit}>
+			<div className="mb-3">
+				<label htmlFor="imputName" className="form-label">Full Name</label>
+				<input type="name" name="full_name" className="form-control" id="imputName" value={contact.full_name} placeholder="Full Name" 
+					onChange={(e) => handleChange(e)} 
+					/>
+			</div>
+			<div className="mb-3">
+				<label htmlFor="exampleInputEmail1" className="form-label">Email</label>
+				<input type="email" name="email" className="form-control" id="exampleInputEmail1" value={contact.email} placeholder="email"
+	    			onChange={(e) => handleChange(e)} 
+					/>
+			</div>
+			<div className="mb-3">
+				<label htmlFor="inputPhone" className="form-label">Phone</label>
+				<input type="phone" name="phone" className="form-control" id="inputPhone" value={contact.phone}  placeholder="Enter Phone"
+					onChange={(e) => handleChange(e)} 
+					/>
+			</div>
+			<div className="mb-3">
+				<label htmlFor="inputAddress" className="form-label">Address</label>
+				<input type="address" name="address" className="form-control" id="inputAddress" value={contact.address}  placeholder="Enter Address"
+					onChange={(e) => handleChange(e)}  
+					/>
+			</div>
+      <div className="form-group mt-3">
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+        <Link to={"/"} type="button" className="btn btn-danger">
+          Cancel
+        </Link>
+      </div>
+		</form>
+    )
+}
